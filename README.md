@@ -15,7 +15,7 @@ Pour extraire proprement le texte de n'importe quel fichier PDF.
 * jouer la commande `get-text-from-pdf`,
 * répondre aux éventuelles questions,
 
-=> Tous les textes seront extraits de tous les fichiers PDF du dossier.
+=> Tous les textes seront extraits de tous les fichiers PDF du dossier. Si le fichier original s'appelle `monfichier.pdf`, le fichier texte s'appellera `monfichier.txt` (simple, non ? :-D ).
 
 ### Tester la commande
 
