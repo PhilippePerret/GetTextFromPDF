@@ -54,6 +54,22 @@ def extract_text_from(pdf_path)
   code = Iconv.conv 'UTF-8', 'iso8859-1', code
 
   # 
+  # Corriger le code
+  # 
+  code = rectifier_code(code)
+
+  # 
+  # Dépôt du code final dans le fichier texte
+  # 
+  File.write(txt_path, code)
+
+
+  puts "#{File.basename(pdf_path)} traité avec succès.".vert
+
+end
+
+def rectifier_code(code)
+  # 
   # Remplacer les 
   # 
   code = code.gsub(/^[\%]+/,'')
@@ -75,25 +91,36 @@ def extract_text_from(pdf_path)
   # des changements de pages
   # 
   code = code.gsub(/\n+([a-zéèïîù])/, ' \1')
+  #
+  # Les "œ" ont été remplacés par "oe", on les remets
+  # 
+  code = code.gsub(/oe/,'œ').gsub(/OE/,'Œ')
+  # 
+  # Les longs tirest ont été remplacés par deux courts
+  # 
+  code = code.gsub(/\-\-/,'—')
+  # 
+  # Les tirets suivis d'espaces, en plusieurs nombres, dans une
+  # phrase, correspond à une liste d'items
+  # 
+  if code.match?(/^- .+- .+/)
+    code = code.gsub(/^(- .+)+$/) do
+      tout = $1.freeze
+      tout.split("- ").join("\n- ")
+    end
+  end
+
   # 
   # Finalisation
   # 
   code = code.strip
-
-  # 
-  # Dépôt du code final dans le fichier texte
-  # 
-  File.write(txt_path, code)
   
-
-  puts "#{File.basename(pdf_path)} traité avec succès.".vert
-
 end
 
 # @return [Array<Paths>] La liste de tous les fichiers PDF du 
 # dossier du getter.
 def pdfs
-  @pdfs ||= Dir["#{folder}/*.{pdf,PDF}"]
+  @pdfs ||= Dir["#{folder}/*.pdf"]
 end
 
 end #/ class TextGetter
