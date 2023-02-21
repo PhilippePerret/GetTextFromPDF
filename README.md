@@ -1,5 +1,6 @@
 # GetTextFromPDF
 
+Pour extraire proprement le texte de n'importe quel fichier PDF.
 
 ## Usage
 
